@@ -5,25 +5,21 @@ from django.core.mail import send_mail
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import viewsets, filters, pagination
+from rest_framework import filters, pagination, viewsets
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.mixins import (
-    CreateModelMixin, DestroyModelMixin, ListModelMixin
-)
+from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
+                                   ListModelMixin)
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
-from reviews.models import User, Review, Title, Genre, Category
+from reviews.models import Category, Genre, Review, Title, User
 
 from .filters import TitleFilter
 from .pagination import UsersPagination
 from .permissions import AdminOnly, IsAdmin, IsAuthor, IsModerator, ReadOnly
-from .serializers import (
-    CategorySerializer, CommentSerializer,
-    GenreSerializer,
-    ReviewSerializer, TitleSerializer, TitleSerializerGet,
-    UserSerializer, AuthSerializer
-)
+from .serializers import (AuthSerializer, CategorySerializer,
+                          CommentSerializer, GenreSerializer, ReviewSerializer,
+                          TitleSerializer, TitleSerializerGet, UserSerializer)
 
 
 @api_view(['POST'])
@@ -94,7 +90,7 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = UsersPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
-    permission_classes = (AdminOnly, )
+    permission_classes = (AdminOnly,)
 
     def get_queryset(self):
         username = self.request.parser_context.get('kwargs').get('pk')

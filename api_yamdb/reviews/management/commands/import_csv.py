@@ -1,7 +1,7 @@
 import csv
 
-from django.core.management.base import BaseCommand
 from django.apps import apps
+from django.core.management.base import BaseCommand
 
 from api_yamdb.settings import BASE_DIR
 
