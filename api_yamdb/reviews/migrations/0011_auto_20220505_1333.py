@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('reviews', '0010_auto_20220505_0920'),
     ]
@@ -14,16 +13,29 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='review',
             name='score',
-            field=models.PositiveSmallIntegerField(validators=[django.core.validators.MinValueValidator(0, message='Оценка не может быть меньше 1'), django.core.validators.MaxValueValidator(10, message='Оценка не может быть больше 10')], verbose_name='Оценка'),
+            field=models.PositiveSmallIntegerField(validators=[
+                django.core.validators.MinValueValidator(0,
+                                                         message='Оценка не '
+                                                                 'может быть '
+                                                                 'меньше 1'),
+                django.core.validators.MaxValueValidator(10,
+                                                         message='Оценка не '
+                                                                 'может быть '
+                                                                 'больше 10')],
+                                                   verbose_name='Оценка'),
         ),
         migrations.AlterField(
             model_name='title',
             name='year',
-            field=models.PositiveSmallIntegerField(blank=True, db_index=True, verbose_name='Год издания произведения'),
+            field=models.PositiveSmallIntegerField(blank=True, db_index=True,
+                                                   verbose_name='Год издания '
+                                                                'произведения'),
         ),
         migrations.AlterField(
             model_name='user',
             name='role',
-            field=models.CharField(choices=[('user', 'user'), ('moderator', 'moderator'), ('admin', 'admin')], default='user', max_length=100),
+            field=models.CharField(
+                choices=[('user', 'user'), ('moderator', 'moderator'),
+                         ('admin', 'admin')], default='user', max_length=100),
         ),
     ]

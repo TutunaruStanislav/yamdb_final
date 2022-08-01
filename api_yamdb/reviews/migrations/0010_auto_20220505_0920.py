@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('reviews', '0009_auto_20220505_0856'),
     ]
@@ -16,6 +15,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddConstraint(
             model_name='review',
-            constraint=models.UniqueConstraint(fields=('author', 'title'), name='unique_review'),
+            constraint=models.UniqueConstraint(fields=('author', 'title'),
+                                               name='unique_review'),
         ),
     ]

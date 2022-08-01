@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('reviews', '0008_auto_20220503_2316'),
     ]
@@ -17,6 +16,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='user',
             name='role',
-            field=models.CharField(choices=[('user', 'user'), ('moderator', 'moderator'), ('admin', 'admin')], default='user', max_length=9),
+            field=models.CharField(
+                choices=[('user', 'user'), ('moderator', 'moderator'),
+                         ('admin', 'admin')], default='user', max_length=9),
         ),
     ]
