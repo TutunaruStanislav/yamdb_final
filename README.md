@@ -1,6 +1,6 @@
 # yamdb_final
 
-![Build Status](https://github.com/TutunaruStanislav/yamdb_final/workflows/Building/badge.svg)](https://github.com/TutunaruStanislav/yamdb_final/actions/workflows/yamdb_workflow.yml)
+![example workflow](https://github.com/TutunaruStanislav/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
 ### Описание:
 Api для проекта YaMDb, который собирает отзывы пользователей на произведения.
