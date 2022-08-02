@@ -9,7 +9,7 @@ services:
       - ./.env
 
   web:
-    image: dockertsg/yamdb_final
+    build: ../api_yamdb
     restart: always
     volumes:
       - static_value:/app/static/
@@ -27,7 +27,6 @@ services:
       - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - static_value:/var/html/static/
       - media_value:/var/html/media/
-      - ../api_yamdb/static/redoc.yaml:/var/html/static/redoc.yaml
     depends_on:
       - web
 
