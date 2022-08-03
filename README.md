@@ -1,4 +1,5 @@
 # yamdb_final
+#### проект доступен по адресу: http://51.250.107.213
 
 ![example workflow](https://github.com/TutunaruStanislav/yamdb_final/actions/workflows/yamdb_workflow.yml/badge.svg)
 
