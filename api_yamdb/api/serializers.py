@@ -1,6 +1,5 @@
 import re
 
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from rest_framework.validators import UniqueValidator
 from reviews.models import Category, Comment, Genre, Review, Title, User
@@ -95,20 +94,6 @@ class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = '__all__'
-
-    def validate(self, data):
-        request = self.context.get('request')
-        author = request.user
-        title_id = self.context['request'].parser_context['kwargs']['title_id']
-        title = get_object_or_404(Title, id=title_id)
-        if (
-            Review.objects.filter(author=author, title=title).exists()
-            and request.method == 'POST'
-        ):
-            raise serializers.ValidationError(
-                'У вас уже есть отзыв на это произведение.'
-            )
-        return super().validate(data)
 
 
 class CommentSerializer(serializers.ModelSerializer):

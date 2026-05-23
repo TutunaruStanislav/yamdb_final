@@ -408,6 +408,33 @@ paths:
       security:
       - jwt-token:
         - write:admin
+  /titles/top/:
+    get:
+      tags:
+        - TITLES
+      operationId: Получение топ 10 произведений по рейтингу
+      description: |
+        Получить список до 10 произведений с наивысшим средним рейтингом.
+
+        Права доступа: **Доступно без токена**
+
+        Произведения сортируются по среднему рейтингу в порядке убывания.
+        Произведения без отзывов имеют рейтинг null.
+      parameters:
+        - name: category
+          in: query
+          description: фильтрует по полю slug категории
+          schema:
+            type: string
+      responses:
+        200:
+          description: Удачное выполнение запроса
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Title'
   /titles/{titles_id}/:
     parameters:
       - name: titles_id
