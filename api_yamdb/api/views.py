@@ -2,11 +2,13 @@ import random
 from http import HTTPStatus
 
 from django.core.mail import send_mail
+from django.db import IntegrityError
 from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import filters, pagination, viewsets
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework import filters, pagination, serializers, status, viewsets
+from rest_framework.decorators import (action, api_view,
+                                       permission_classes)
 from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
                                    ListModelMixin)
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -129,7 +131,12 @@ class ReviewViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         title_id = self.kwargs.get('title_id')
         title = get_object_or_404(Title, id=title_id)
-        serializer.save(author=self.request.user, title=title)
+        try:
+            serializer.save(author=self.request.user, title=title)
+        except IntegrityError:
+            raise serializers.ValidationError(
+                'У вас уже есть отзыв на это произведение.'
+            )
 
 
 class CommentViewSet(viewsets.ModelViewSet):
@@ -181,3 +188,38 @@ class TitleViewSet(viewsets.ModelViewSet):
         if self.request.method == 'GET':
             return TitleSerializerGet
         return TitleSerializer
+
+    @action(detail=False, methods=['get'],
+            permission_classes=[AllowAny])
+    def top(self, request):
+        """Get top 10 titles by average rating.
+
+        Returns a list of up to 10 titles sorted by average review score
+        in descending order. Titles without reviews have rating=null.
+
+        Query Parameters:
+            category (string, optional): Filter by category slug.
+                Example: ?category=movies
+
+        Returns:
+            List of Title objects with ratings, paginated.
+
+        Example:
+            GET /api/v1/titles/top/ - Get top 10 titles
+            GET /api/v1/titles/top/?category=movies - Get top titles in movies
+
+        :author: claude
+        """
+        queryset = Title.objects.annotate(
+            rating=Avg('reviews__score')
+        ).order_by('-rating')
+
+        category_slug = request.query_params.get('category')
+        if category_slug:
+            queryset = queryset.filter(
+                category__slug=category_slug
+            )
+
+        queryset = queryset[:10]
+        serializer = TitleSerializerGet(queryset, many=True)
+        return Response(serializer.data)

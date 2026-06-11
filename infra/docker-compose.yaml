@@ -9,11 +9,14 @@ services:
       - ./.env
 
   web:
-    image: dockertsg/yamdb_final
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
     restart: always
     volumes:
       - static_value:/app/static/
       - media_value:/app/media/
+      - ../tests:/app/tests:ro
     depends_on:
       - db
     env_file:
